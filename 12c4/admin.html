@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ Thống Quản Trị - Yersin School</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .admin-wrapper { display: flex; gap: 20px; max-width: 1200px; margin: 0 auto; }
+        
+        /* Cột Trái: Form thêm bài */
+        .sidebar-form { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); height: fit-content; }
+        .sidebar-form h2 { color: #0056b3; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        /* Cột Phải: Danh sách */
+        .content-list { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
+        input, select, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        label { font-weight: bold; font-size: 14px; color: #555; display: block; margin-bottom: 5px; }
+        
+        button.btn-add { width: 100%; background: #0056b3; color: white; padding: 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button.btn-add:hover { background: #004494; }
+        
+        /* Bảng */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { background: #f8f9fa; color: #333; }
+        .img-preview { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+        
+        .btn-del { background: #ff4d4f; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+        
+        .header-bar { max-width: 1200px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; }
+        .btn-logout { background: #333; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; font-size: 14px; }
+        .btn-home { background: #28a745; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; font-size: 14px; margin-right: 10px; }
+        
+        /* --- PHẦN CHAT ADMIN --- */
+        .admin-chat-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-title-admin {
+            background: #0056b3;
+            color: white;
+            padding: 12px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-content-admin {
+            padding: 15px;
+            height: 150px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            font-size: 14px;
+        }
+        .user-last-msg {
+            background: #e6f7ff;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #b3e0ff;
+            margin-bottom: 10px;
+        }
+        .admin-reply-area {
+            padding: 10px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 5px;
+        }
+        .admin-reply-area input {
+            margin-bottom: 0; 
+            border-radius: 20px;
+            font-size: 13px;
+        }
+        .admin-reply-area button {
+            width: auto;
+            border-radius: 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        // Kiểm tra đăng nhập
+        if(localStorage.getItem('isLoggedIn') !== 'true') { window.location.href = 'login.html'; }
+        function logout() { localStorage.removeItem('isLoggedIn'); window.location.href = 'login.html'; }
+    </script>
+
+    <div class="header-bar">
+        <h3 style="margin:0; color:#333;">Xin chào, Admin</h3>
+        <div>
+            <a href="index.html" class="btn-home" target="_blank">Xem Trang Chủ</a>
+            <button onclick="logout()" class="btn-logout" style="border:none; cursor:pointer;">Đăng xuất</button>
+        </div>
+    </div>
+
+    <div class="admin-wrapper">
+        <div class="sidebar-form">
+            <h2><i class="fas fa-edit"></i> Đăng Bài Mới</h2>
+            <form id="postForm">
+                <label>Chọn Chuyên Mục:</label>
+                <select id="pType">
+                    <option value="tin_tuc">Tin Tức (Cột Trái)</option>
+                    <option value="thong_bao">Thông Báo (Cột Phải)</option>
+                </select>
+
+                <label>Tiêu đề bài viết:</label>
+                <input type="text" id="pTitle" placeholder="Ví dụ: Lễ khai giảng năm học mới..." required>
+
+                <label>Mô tả ngắn:</label>
+                <textarea id="pDesc" rows="3" placeholder="Tóm tắt nội dung bài viết..."></textarea>
+
+                <label>Link ảnh (URL):</label>
+                <input type="text" id="pImg" placeholder="https://example.com/anh.jpg">
+                <small style="display:block; margin-bottom:10px; color:#888;">*Nếu không có ảnh, để trống sẽ dùng ảnh mặc định.</small>
+
+                <label>Ngày đăng:</label>
+                <input type="date" id="pDate" required>
+
+                <button type="button" class="btn-add" onclick="addPost()">ĐĂNG LÊN WEBSITE</button>
+            </form>
+        </div>
+
+        <div class="content-list">
+            <h2 style="color: #333; border-bottom: 2px solid #eee; margin-top: 0; padding-bottom: 10px;">Danh Sách Bài Đã Đăng</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="10%">Loại</th>
+                        <th width="10%">Ảnh</th>
+                        <th width="40%">Tiêu đề</th>
+                        <th width="20%">Ngày</th>
+                        <th width="10%">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="admin-chat-box">
+        <div class="chat-title-admin">
+            <span><i class="fas fa-comments"></i> Hỗ trợ khách hàng</span>
+        </div>
+        <div class="chat-content-admin" id="adminChatList">
+    <div style="text-align:center; color:#999; font-size:12px; margin-bottom:10px;">--- Bắt đầu hội thoại ---</div>
+            <div id="latestUserMsg" class="user-last-msg">Chưa có tin nhắn nào...</div>
+        </div>
+        <div class="admin-reply-area">
+            <input type="text" id="adminReplyInput" placeholder="Nhập câu trả lời...">
+            <button onclick="replyToUser()">Gửi</button>
+        </div>
+    </div>
+    <script>
+        function getPosts() { return JSON.parse(localStorage.getItem('schoolPosts')) || []; }
+        function savePosts(data) { localStorage.setItem('schoolPosts', JSON.stringify(data)); render(); }
+
+        function addPost() {
+            const type = document.getElementById('pType').value;
+            const title = document.getElementById('pTitle').value;
+            const desc = document.getElementById('pDesc').value;
+            const img = document.getElementById('pImg').value || 'https://via.placeholder.com/150/0056b3/FFFFFF?text=YERSIN';
+            const date = document.getElementById('pDate').value;
+
+            if(!title || !date) { alert("Vui lòng nhập Tiêu đề và Ngày!"); return; }
+
+            const newPost = { id: Date.now(), type, title, desc, img, date };
+            const posts = getPosts();
+            posts.push(newPost);
+            savePosts(posts);
+
+            document.getElementById('postForm').reset();
+            alert("Đã đăng bài thành công! Hãy qua Trang Chủ kiểm tra.");
+        }
+
+        function deletePost(id) {
+            if(confirm("Bạn có chắc muốn xóa bài này không?")) {
+                const posts = getPosts().filter(p => p.id !== id);
+                savePosts(posts);
+            }
+        }
+
+        function render() {
+            const posts = getPosts();
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            posts.slice().reverse().forEach(p => {
+                const typeLabel = p.type === 'tin_tuc' 
+                    ? '<span style="color:blue; font-weight:bold;">Tin tức</span>' 
+                    : '<span style="color:orange; font-weight:bold;">Thông báo</span>';
+                
+                const row = `<tr>
+                    <td>${typeLabel}</td>
+                    <td><img src="${p.img}" class="img-preview" onerror="this.src='https://via.placeholder.com/50'"></td>
+                    <td>${p.title}</td>
+                    <td>${p.date}</td>
+                    <td><button class="btn-del" onclick="deletePost(${p.id})">Xóa</button></td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        document.getElementById('pDate').valueAsDate = new Date();
+        render();
+
+        // ===== PHẦN LOGIC CHAT SUPPORT (ĐÃ SỬA ĐỂ LƯU LỊCH SỬ TẠM THỜI) =====
+        
+        const chatList = document.getElementById('adminChatList');
+
+        // Hàm hỗ trợ thêm tin nhắn vào giao diện
+        function appendMessage(sender, text) {
+            let html = '';
+            if (sender === 'admin') {
+                // Tin nhắn của Admin (nằm bên phải, màu xanh)
+                html = `<div style="text-align: right; margin: 10px 0;">
+                            <span style="background: #0056b3; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; font-size: 14px;">
+                                ${text}
+                            </span>
+                        </div>`;
+            } else {
+                // Tin nhắn của Khách (nằm bên trái, màu xanh nhạt)
+                html = `<div class="user-last-msg" style="margin: 10px 0; background: #e6f7ff; padding: 10px; border-radius: 10px; border: 1px solid #b3e0ff;">
+                            <strong>Khách:</strong> ${text}
+                        </div>`;
+            }
+            
+            chatList.innerHTML += html;
+            // Tự động cuộn xuống dưới cùng
+            chatList.scrollTop = chatList.scrollHeight;
+        }
+
+        // 1. Hàm gửi tin nhắn trả lời về Index
+        function replyToUser() {
+            const input = document.getElementById('adminReplyInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            // Gửi dữ liệu đi
+            localStorage.setItem('msg_from_admin', text + "||" + Date.now());
+            
+            // Hiện tin nhắn của chính mình lên màn hình admin
+            appendMessage('admin', text);
+            
+            input.value = '';
+        }
+
+        // 2. Lắng nghe tin nhắn từ khách
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'msg_to_admin') {
+                const fullMsg = event.newValue;
+                if (fullMsg) {
+                    const realMsg = fullMsg.split("||")[0];
+                    // Thêm tin nhắn khách vào danh sách (không xóa tin cũ)
+                    appendMessage('user', realMsg);
+                    
+                    // Thông báo
+                    document.title = "🔔 Tin nhắn mới!";
+                }
+            }
+        });
+
+        // 3. Load tin nhắn cuối cùng khi mở trang (nếu có)
+        const lastMsg = localStorage.getItem('msg_to_admin');
+        if(lastMsg) {
+             const realMsg = lastMsg.split("||")[0];
+             appendMessage('user', realMsg);
+        }
+    </script>
+</body>
+</html>

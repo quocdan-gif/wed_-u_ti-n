@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trường Yersin - Trang Chủ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CẤU HÌNH CHUNG --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Open Sans', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
+        body { background-color: #f4f7f6; color: #333; }
+
+        /* --- NAVBAR (MENU TRÊN) --- */
+        .navbar { background-color: #0056b3; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1100; width: 100%; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: center; align-items: center; }
+        .main-nav { list-style: none; display: flex; align-items: center; }
+        .main-nav > li { position: relative; }
+        .main-nav > li > a { display: block; padding: 20px 15px; color: white; text-decoration: none; font-weight: 600; font-size: 13px; text-transform: uppercase; transition: 0.3s; white-space: nowrap; }
+        .main-nav > li:hover > a { background-color: #004494; color: #ffca28; }
+        
+        /* Dropdown Menu */
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: white; min-width: 260px; list-style: none; box-shadow: 0 5px 20px rgba(0,0,0,0.15); display: none; border-top: 4px solid #ffca28; padding: 10px 0; border-radius: 0 0 4px 4px; }
+        .main-nav > li:hover .dropdown { display: block; animation: fadeIn 0.3s ease; }
+        .dropdown li a { display: block; padding: 12px 20px; color: #333; text-decoration: none; font-size: 14px; border-bottom: 1px solid #f1f1f1; text-transform: none; }
+        .dropdown li a:hover { background-color: #f8f9fa; color: #0056b3; padding-left: 25px; }
+        .nav-contact-item { background-color: #d32f2f; }
+        .nav-contact-item:hover { background-color: #b71c1c !important; }
+
+        /* --- SIDEBAR (THANH BÊN) --- */
+        .sidebar-container { position: fixed; top: 58px; left: 0; height: calc(100vh - 58px); width: 60px; background-color: #fff; border-right: 1px solid #eee; z-index: 1000; transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
+        .sidebar-container:hover { width: 280px; }
+        .menu-header { height: 50px; display: flex; align-items: center; padding: 0 20px; background-color: #004494; color: white; font-weight: bold; white-space: nowrap; }
+        .menu-header span { margin-left: 20px; opacity: 0; transition: opacity 0.3s; }
+        .sidebar-container:hover .menu-header span { opacity: 1; }
+        .menu-list { list-style: none; margin-top: 10px; }
+        .menu-list li a { display: flex; align-items: center; padding: 15px 20px; color: #555; text-decoration: none; white-space: nowrap; transition: all 0.3s; border-left: 4px solid transparent; }
+        .menu-list li a i { min-width: 25px; text-align: center; font-size: 18px; color: #0056b3; }
+        .menu-list li a span { margin-left: 20px; font-size: 14px; font-weight: 600; opacity: 0; transition: opacity 0.2s; }
+        .sidebar-container:hover .menu-list li a span { opacity: 1; }
+        .menu-list li a:hover { background-color: #f0f7ff; border-left: 4px solid #0056b3; color: #0056b3; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { margin-left: 60px; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Hero Section */
+        .hero-section { background: linear-gradient(rgba(0, 86, 179, 0.8), rgba(0, 68, 148, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); background-size: cover; background-position: center; height: 500px; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px; }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 20px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .btn-cta { padding: 12px 35px; background-color: #ffca28; color: #004494; text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s; display: inline-block; box-shadow: 0 4px 15px rgba(255, 202, 40, 0.4); }
+        .btn-cta:hover { background-color: #ffb300; transform: translateY(-2px); }
+
+        /* Features Section */
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2rem; color: #0056b3; margin-bottom: 10px; }
+        .section-title .divider { width: 80px; height: 4px; background-color: #ffca28; margin: 0 auto; border-radius: 2px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .feature-card { background: white; padding: 40px 30px; border-radius: 10px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eee; }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0, 86, 179, 0.15); border-color: #0056b3; }
+        .feature-icon { font-size: 3rem; color: #0056b3; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 1.2rem; margin-bottom: 15px; color: #333; }
+        .feature-card p { color: #666; font-size: 0.95rem; line-height: 1.6; }
+
+        /* --- TIN TỨC ĐỘNG --- */
+        .news-section-dynamic { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 20px; }
+        .news-column { flex: 1; min-width: 300px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .news-column h3 { border-bottom: 2px solid #ffca28; padding-bottom: 10px; margin-bottom: 20px; color: #004494; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        .news-item { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #f1f1f1; padding-bottom: 15px; transition: 0.2s; }
+        .news-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .news-item:hover { background-color: #fafafa; }
+        .news-item img { width: 90px; height: 90px; object-fit: cover; border-radius: 6px; }
+        .news-info h4 { font-size: 15px; margin-bottom: 5px; color: #333; font-weight: 700; line-height: 1.4; }
+        .news-info span { font-size: 12px; color: #888; display: block; margin-bottom: 5px; }
+        .news-info p { font-size: 13px; color: #666; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* Logo Section */
+        .logo-section { margin-top: 40px; text-align: center; border-top: 1px solid #eee; padding-top: 40px; }
+
+        /* Footer */
+        .main-footer { background-color: #333; color: white; padding: 40px 20px; margin-top: auto; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-links a { color: #bbb; text-decoration: none; margin-left: 20px; transition: 0.2s; }
+        .footer-links a:hover { color: white; }
+        .admin-trigger { color: #444; text-decoration: none; font-size: 12px; margin-left: 15px; }
+        .admin-trigger:hover { color: #ffca28; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        @media (max-width: 768px) { .navbar { display: none; } .sidebar-container { top: 0; height: 100vh; } .main-content { margin-left: 60px; } }
+
+        /* =======================================================
+           PHẦN MỚI THÊM TỪ FILE FRONT END.HTML (CHATBOX CSS)
+           ======================================================= */
+        .chat-launcher {
+            position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+            background-color: #7cb342; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 9999; color: white;
+            font-size: 30px; transition: all 0.3s;
+        }
+        .chat-launcher:hover { transform: scale(1.1); background-color: #689f38; }
+
+        .chat-window {
+            position: fixed; bottom: 90px; right: 20px; width: 350px; height: 450px;
+            background-color: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column; overflow: hidden; z-index: 9999;
+            opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease;
+            text-align: left;
+        }
+        .chat-window.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .chat-header {
+            background-color: #FF6633; color: white; padding: 15px; display: flex;
+            align-items: center; font-weight: bold;
+        }
+        .chat-header img { width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; background-color: white; object-fit: cover; }
+        
+        .chat-body { flex: 1; padding: 15px; background-color: #f5f5f5; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .message { max-width: 80%; padding: 10px 15px; border-radius: 15px; font-size: 14px; line-height: 1.4; word-wrap: break-word; }
+        .bot-message { align-self: flex-start; background-color: white; border: 1px solid #ddd; border-bottom-left-radius: 2px; }
+        .user-message { align-self: flex-end; background-color: #FF6633 ; color: white; border-bottom-right-radius: 2px; }
+        
+        .chat-footer { padding: 10px; background-color: white; border-top: 1px solid #eee; display: flex; gap: 5px; }
+        .chat-footer input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none; }
+        .chat-footer button { background-color: #558b2f; color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .chat-footer button:hover { background-color: #33691e; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="main-nav">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li>
+                    <a href="#">Giới thiệu <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Giới Thiệu Trường</a></li>
+                        <li><a href="#">Ban Giám Hiệu</a></li>
+                        <li><a href="#">Đoàn Thanh Niên</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Các Lớp <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Lớp 10</a></li>
+                        <li><a href="#">Lớp 10H</a></li>
+                        <li><a href="#">Lớp 11</a></li>
+                        <li><a href="#">Lớp 11H</a></li>
+                        <li><a href="#">Lớp 12</a></li>
+                        <li><a href="#">Lớp 12H</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Tuyển sinh</a></li>
+                <li><a href="#news-area">Tin tức</a></li>
+                <li class="nav-contact-item">
+                    <a href="tel:0198287256"><i class="fas fa-phone-alt"></i> 0198287256</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <aside class="sidebar-container">
+        <div class="menu-header">
+            <i class="fas fa-bars"></i>
+            <span>Mục Lục</span>
+        </div>
+        <ul class="menu-list">
+            <li><a href="#"><i class="fas fa-home"></i><span>Trang chủ</span></a></li>
+            <li><a href="https://yersinschool.edu.vn/gioi-thieu/"><i class="fas fa-info-circle"></i><span>Giới thiệu</span></a></li>
+            <li><a href="https://yersinschool.edu.vn/tin-tuc/"><i class="fas fa-newspaper"></i><span>Tin tức & Sự kiện</span></a></li>
+            <li><a href="https://yersinschool.edu.vn/goc-giao-duc/"><i class="fas fa-graduation-cap"></i><span>Chương Trình Dạy</span></a></li>
+            <li><a href="#"><i class="fas fa-globe"></i><span>Học Sinh</span></a></li>
+            <li><a href="#"><i class="fas fa-user-graduate"></i><span>Cựu Học Sinh</span></a></li>
+            <li><a href="info@yersinschool.edu.vn"><i class="fas fa-envelope"></i><span>Liên hệ<br>
+            info@yersinschool.edu.vn<br>
+            tel:02873001139<br></span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Yêu Thương - Tôn Trọng - Chia Sẻ</h1>
+                <p>Chào mừng bạn đến với môi trường giáo dục TH-THCS-THPT,nơi ươm mầm tài năng và kiến tạo tương lai vững chắc.</p>
+                <a href="https://yersinschool.edu.vn/tuyen-sinh/" class="btn-cta">Đăng Ký Tuyển Sinh</a>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="section-title">
+                <h2>Tại Sao Chọn Trường Yersin</h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <a href="https://yersinschool.edu.vn/chuong-trinh-giao-duc/"><h3>Chương trình giáo dục</h3>
+                    <p>Chương trình học</p></a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-laptop-code"></i></div>
+                    <a href="https://yersinschool.edu.vn/he-thong-truong-hoc/"><h3>Cơ Sở Vật Chất</h3>
+                    <p>Hệ thống phòng, thư viện và khuôn viên hiện đại phục vụ tốt cho nhu cầu học tập.</p></a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-briefcase"></i></div>
+                    <h3>Tốt Nghiệp</h3>
+                    <p>Mạng lưới rộng rãi giúp học sinh định hướng và vào các trường đại học hàng đầu.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="news-area" style="background-color: #fafbfc; border-top: 1px solid #eee;">
+            <div class="section-title">
+                <h2>Tin Tức & Thông Báo</h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="news-section-dynamic">
+                <div class="news-column">
+                    <h3><i class="fas fa-newspaper"></i> Tin Tức Nổi Bật</h3>
+                    <div id="tin-tuc-container">
+                        <p style="text-align:center; color:#999; margin-top:20px;">Đang cập nhật tin tức...</p>
+                    </div>
+                    <div style="text-align: right; margin-top: 15px;">
+                        <a href="#" style="color: #0056b3; font-weight: bold; text-decoration: none; font-size: 13px;">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="news-column">
+                    <h3><i class="fas fa-bullhorn"></i> Thông Báo Nhà Trường</h3>
+                    <div id="thong-bao-container">
+                        <p style="text-align:center; color:#999; margin-top:20px;">Chưa có thông báo mới.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="logo-section">
+                <p style="margin-bottom: 20px; color: #666;"></p>
+                <img src="https://yersinschool.edu.vn/wp-content/uploads/2025/09/logo.svg" alt="Logo Yersin" class="logo-img" style="max-height: 80px; display: inline-block; opacity: 0.8; filter: grayscale(20%); transition: 0.3s;">
+            </div>
+        </section>
+
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3 style="color:#FFA500">YERSIN SCHOOL</h3>
+                    <p style="font-size: 12px; color:#FFD700; margin-top: 5px;">© 2025 Bản quyền thuộc về nhà trường.</p>
+                </div>
+                
+                <iframe 
+                src="map.html" 
+                width="500px" 
+                height="400px" 
+                style="border:none; border-radius: 8px;"
+                title="Bản Đồ Đến Trường YERSIN SCHOOL">
+                </iframe>
+
+                <div class="footer-links">
+                    <a href="#" style="color:#FFFFFF">Điều khoản</a>
+                    <a href="#" style="color:#FFFFFF">Bảo mật</a>
+                    <a href="#" style="color:#FFFFFF">Liên hệ</a>
+                    <a href="login.html" class="admin-trigger" style="color:#FFFFFF"><i class="fas fa-key"></i> Admin</a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <div class="chat-launcher" onclick="toggleChat()">💬</div>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <img src="https://yersinschool.edu.vn/wp-content/uploads/2025/09/logo.svg" alt="Logo">
+           THPT Yersin
+        </div>
+
+        <div class="chat-body" id="chatBody">
+            <div class="message bot-message">Chào bạn! Bạn cần tư vấn gì cứ nhắn tin nhé, Admin sẽ trả lời ngay.</div>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <script>
+        // --- SCRIPT 1: Xử lý tin tức (Giữ nguyên của index.html) ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const posts = JSON.parse(localStorage.getItem('schoolPosts')) || [];
+            
+            const tinTucContainer = document.getElementById('tin-tuc-container');
+            const thongBaoContainer = document.getElementById('thong-bao-container');
+            
+            let hasTinTuc = false;
+            let hasThongBao = false;
+
+            // Đảo ngược để tin mới nhất lên đầu
+            posts.slice().reverse().forEach(post => {
+                const html = `
+                    <div class="news-item">
+                        <img src="${post.img}" alt="Ảnh bài viết" onerror="this.src='https://via.placeholder.com/90'">
+                        <div class="news-info">
+                            <h4>${post.title}</h4>
+                            <span><i class="far fa-clock"></i> ${post.date}</span>
+                            <p>${post.desc}</p>
+                        </div>
+                    </div>
+                `;
+
+                if(post.type === 'tin_tuc') {
+                    if(!hasTinTuc) { tinTucContainer.innerHTML = ''; hasTinTuc = true; }
+                    // Chỉ hiện tối đa 3 tin tức để đẹp giao diện
+                    if(tinTucContainer.children.length < 3) {
+                        tinTucContainer.innerHTML += html;
+                    }
+                } else {
+                    if(!hasThongBao) { thongBaoContainer.innerHTML = ''; hasThongBao = true; }
+                    // Chỉ hiện tối đa 3 thông báo
+                    if(thongBaoContainer.children.length < 3) {
+                        thongBaoContainer.innerHTML += html;
+                    }
+                }
+            });
+        });
+
+        // --- SCRIPT 2: Xử lý Chatbox (Thêm từ Front End.html) ---
+        const chatWindow = document.getElementById('chatWindow');
+        const chatBody = document.getElementById('chatBody');
+        const userInput = document.getElementById('userInput');
+
+        function toggleChat() {
+            chatWindow.classList.toggle('show');
+            if (chatWindow.classList.contains('show')) userInput.focus();
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        function addMessage(text, className) {
+            const div = document.createElement('div');
+            div.className = `message ${className}`;
+            div.textContent = text;
+            chatBody.appendChild(div);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function sendMessage() {
+            const text = userInput.value.trim();
+            if (text === "") return;
+            addMessage(text, 'user-message');
+            localStorage.setItem('msg_to_admin', text + "||" + Date.now());
+            userInput.value = '';
+        }
+
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'msg_from_admin') {
+                const fullMsg = event.newValue;
+                if (fullMsg) {
+                    const realMsg = fullMsg.split("||")[0]; 
+                    addMessage(realMsg, 'bot-message');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

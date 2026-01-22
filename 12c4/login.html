@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Nhập Quản Trị</title>
+    <style>
+        body { background-color: #1e2125; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { background: #2c3034; padding: 40px; border-radius: 8px; width: 300px; text-align: center; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        h2 { color: #d4e157; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #444; background: #1e2125; color: white; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #d4e157; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 4px; margin-top: 10px; }
+        button:hover { background: #c0ca33; }
+        .error { color: #ff5252; margin-top: 15px; display: none; }
+        .back-link { display: block; margin-top: 20px; color: #aaa; text-decoration: none; font-size: 13px; }
+        .back-link:hover { color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>LOGIN SYSTEM</h2>
+        <input type="text" id="username" placeholder="Tài khoản (admin)">
+        <input type="password" id="password" placeholder="Mật khẩu (123456)">
+        <button onclick="checkLogin()">Vào Hệ Thống</button>
+        <div id="error-msg" class="error">Sai tài khoản hoặc mật khẩu!</div>
+        <a href="index.html" class="back-link">← Quay lại trang chủ</a>
+    </div>
+
+    <script>
+        if(localStorage.getItem('isLoggedIn') === 'true') { window.location.href = 'admin.html'; }
+
+        function checkLogin() {
+            var user = document.getElementById('username').value;
+            var pass = document.getElementById('password').value;
+            if(user === 'admin' && pass === '123456') {
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = 'admin.html';
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

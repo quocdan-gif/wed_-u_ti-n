@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trường THPT Yersin Đà Lạt</title>
+    <style>
+        /* --- CSS CHO PHẦN CHÍNH (BẢN ĐỒ & THÔNG TIN) --- */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        h2 {
+            color: #2e7d32;
+            border-bottom: 2px solid #2e7d32;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .info-address {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        /* --- PHẦN CHỈNH SỬA KÍCH THƯỚC BẢN ĐỒ --- */
+        .map-container {
+            overflow: hidden;
+            max-width: 700px; /* Chiều rộng */
+            margin: 0 auto;   /* Canh giữa */
+            padding-bottom: 45%; /* Chiều cao */
+            position: relative;
+            height: 0;
+            border: 2px solid #2e7d32;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: #eee;
+        }
+
+        .map-container iframe {
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            border: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h2>Vị trí Trường YERSIN SCHOOL Đà Lạt</h2>
+    <p class="info-address"><strong>📍 Địa chỉ:</strong> 27 Đường Tôn Thất Tùng, Phường 8, Thành phố Đà Lạt, Lâm Đồng</p>
+    
+    <div class="map-container">
+        <iframe 
+            src="https://maps.google.com/maps?q=Trường+THPT+Yersin+Đà+Lạt&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</body>
+</html>
